@@ -1,10 +1,12 @@
-package com.javaweb.spring_boot_web_non_jwt.Beans;
+package com.javaweb.spring_boot_web_non_jwt.dto;
+
+import java.util.List;
 
 import lombok.Data;
 
 @Data
-public class BuildingDTO {
-	private String name;
+public class GetBuildingRequest {
+    private String name;
 	private Integer numberOfBasement;
 	private String address;
 	private Long districtId;
@@ -15,5 +17,5 @@ public class BuildingDTO {
 	private String rentPrice;
 	private String serviceFee;
 	private String brokerageFee;
-	private String rentArea;
+    private List<String> typeCode;
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.javaweb.spring_boot_web_non_jwt.Beans.BuildingDTO;
+import com.javaweb.spring_boot_web_non_jwt.dto.GetBuildingRequest;
 import com.javaweb.spring_boot_web_non_jwt.repository.BuildingRepository;
 import com.javaweb.spring_boot_web_non_jwt.repository.entity.BuildingEntity;
 import com.javaweb.spring_boot_web_non_jwt.service.BuildingService;
@@ -16,9 +17,9 @@ public class BuildingServiceImpl implements BuildingService{
     private BuildingRepository buildingRepository;
 
     @Override
-    public List<BuildingDTO> findAll(String name, Long districtId) {
+    public List<BuildingDTO> findAll(GetBuildingRequest request) {
         List<BuildingDTO> result = new ArrayList<>();
-        List<BuildingEntity> buildingEntities = buildingRepository.findAll(name, districtId);
+        List<BuildingEntity> buildingEntities = buildingRepository.findAll(request);
 
         for(BuildingEntity item : buildingEntities) {
             BuildingDTO building = new BuildingDTO();
