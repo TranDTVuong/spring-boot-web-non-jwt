@@ -8,7 +8,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.javaweb.spring_boot_web_non_jwt.Beans.BuildingDTO;
-import com.javaweb.spring_boot_web_non_jwt.repository.RentAreaRepository;
 import com.javaweb.spring_boot_web_non_jwt.repository.entity.BuildingEntity;
 import com.javaweb.spring_boot_web_non_jwt.repository.entity.RentAreaEntity;
 

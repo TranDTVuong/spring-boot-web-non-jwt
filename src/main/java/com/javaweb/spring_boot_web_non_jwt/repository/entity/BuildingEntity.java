@@ -38,10 +38,10 @@ public class BuildingEntity {
 	private String managerName;
 	@Column(name = "managerphonenumber")
 	private String managerPhoneNumber;
-	@Column(name = "floorerea")
-	private Long floorErea;
-	@Column(name = "emptyerea")
-	private String emptyErea;
+	@Column(name = "floorarea")
+	private Long floorArea;
+	// @Column(name = "emptyerea")
+	// private String emptyErea;
 	@Column(name = "rentprice")
 	private String rentPrice;
 	@Column(name = "servicefee")
