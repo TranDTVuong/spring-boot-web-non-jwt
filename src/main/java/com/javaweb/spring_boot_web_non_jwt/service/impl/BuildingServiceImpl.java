@@ -1,4 +1,4 @@
-package com.javaweb.spring_boot_web_non_jwt.service.imp;
+package com.javaweb.spring_boot_web_non_jwt.service.impl;
 
 import java.util.*;
 
@@ -19,7 +19,7 @@ public class BuildingServiceImpl implements BuildingService{
     @Override
     public List<BuildingDTO> findAll(GetBuildingRequest request) {
         List<BuildingDTO> result = new ArrayList<>();
-        List<BuildingEntity> buildingEntities = buildingRepository.findAll(request);
+        List<BuildingEntity> buildingEntities = buildingRepository.findAll();
 
         for(BuildingEntity item : buildingEntities) {
             BuildingDTO building = new BuildingDTO();

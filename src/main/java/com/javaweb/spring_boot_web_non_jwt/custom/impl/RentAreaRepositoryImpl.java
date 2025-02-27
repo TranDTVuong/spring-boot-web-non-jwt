@@ -1,4 +1,4 @@
-package com.javaweb.spring_boot_web_non_jwt.repository.imp;
+package com.javaweb.spring_boot_web_non_jwt.custom.impl;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

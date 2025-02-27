@@ -1,4 +1,8 @@
-package com.javaweb.spring_boot_web_non_jwt.service.imp;
+package com.javaweb.spring_boot_web_non_jwt.service.impl;
+
+import java.util.Optional;
+
+import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +20,8 @@ public class DistrictServiceImpl implements DistrictService {
     @Override
     public GetDistrictResponse findNameById(Long id) {
         GetDistrictResponse result = new GetDistrictResponse();
-        DistrictEntity districtEntity = districtRepository.findNameById(id);
+        DistrictEntity districtEntity = districtRepository.findById(id).orElseThrow(() -> 
+        new EntityNotFoundException("District not found with id: " + id));
         result.setName(districtEntity.getName());
         result.setCode(districtEntity.getCode());
         return result;
