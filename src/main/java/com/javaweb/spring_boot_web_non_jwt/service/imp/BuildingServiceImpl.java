@@ -20,7 +20,8 @@ public class BuildingServiceImpl implements BuildingService{
     public List<BuildingDTO> findAll(GetBuildingRequest request) {
         List<BuildingDTO> result = new ArrayList<>();
         List<BuildingEntity> buildingEntities = buildingRepository.findAll(request);
-
+        System.out.println("request: ");
+        System.out.println(request);
         for(BuildingEntity item : buildingEntities) {
             BuildingDTO building = new BuildingDTO();
             building.setName(item.getName());

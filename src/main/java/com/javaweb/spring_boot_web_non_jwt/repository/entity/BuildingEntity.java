@@ -55,4 +55,7 @@ public class BuildingEntity {
 	
 	@OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
 	private List<RentAreaEntity> rentAreas = new ArrayList<>();
+
+	@OneToMany(mappedBy = "building", fetch = FetchType.LAZY)
+    private List<BuildingRentTypeEntity> buildingRentTypes = new ArrayList<>();
 }
