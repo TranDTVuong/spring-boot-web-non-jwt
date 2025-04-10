@@ -3,17 +3,23 @@ package com.javaweb.spring_boot_web_non_jwt.repository.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import lombok.Data;
 
+@NamedStoredProcedureQuery(
+    name = "sp_register_user",
+    procedureName = "sp_register_user",
+    parameters = {
+        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_username", type = String.class),
+        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_password", type = String.class),
+        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_fullname", type = String.class),
+        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_phone", type = String.class),
+        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_email", type = String.class),
+        @StoredProcedureParameter(mode = ParameterMode.IN, name = "p_createdby", type = String.class),
+        @StoredProcedureParameter(mode = ParameterMode.OUT, name = "p_result", type = Integer.class)
+    }
+)
 @Entity
 @Data
 @Table(name = "user")
@@ -22,7 +28,7 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(name = "username", nullable = false, unique = true)
-    private String userName;
+    private String username;
     @Column(name = "password", nullable = false)
     private String password;
     @Column(name = "fullname")

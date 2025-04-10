@@ -9,6 +9,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import lombok.RequiredArgsConstructor;
 
@@ -17,16 +18,26 @@ import lombok.RequiredArgsConstructor;
 public class SecurityConfig {
     private final JwtFilter jwtFilter;
 
+    private static final RequestMatcher[] PUBLIC_MATCHERS = {
+        new AntPathRequestMatcher("/api/auth/**"),
+        new AntPathRequestMatcher("/api/public/**")
+    };
+    
+    private static final String[] ADMIN_URLS = {
+        "/api/admin/**"
+    };
+    
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(new AntPathRequestMatcher("/api/auth/login")).permitAll()
+                .requestMatchers(PUBLIC_MATCHERS).permitAll()
                 .anyRequest().authenticated()
             )
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .sessionManagement(session -> session
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
+    
         return http.build();
     }
 

@@ -1,36 +1,52 @@
 package com.javaweb.spring_boot_web_non_jwt.service.imp;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 
+import com.javaweb.spring_boot_web_non_jwt.dto.UserInformation;
 import com.javaweb.spring_boot_web_non_jwt.dto.common.ResetPasswordResult;
 import com.javaweb.spring_boot_web_non_jwt.dto.common.UserCredential;
+import com.javaweb.spring_boot_web_non_jwt.repository.UserRepository;
+import com.javaweb.spring_boot_web_non_jwt.repository.entity.UserEntity;
 import com.javaweb.spring_boot_web_non_jwt.service.UserService;
+import com.javaweb.spring_boot_web_non_jwt.utils.CommonUtils;
 import com.javaweb.spring_boot_web_non_jwt.utils.CrytoUtil;
+
+import lombok.AllArgsConstructor;
 
 
 @Service
+@AllArgsConstructor
 public class UserServiceImpl implements UserService{
+
+    private static String secretKey;
+
     @Value("${spring.security.secretkey}")
-    static String key;
+    public void setSecretKey(String key) {
+        secretKey = key;
+    }
+
+    @Autowired
+    private final UserRepository userRepository;
 
     @Override
     public String hashPassword(String username, String password) {
         if(password.isEmpty() || password == null) {
-            System.out.print("Password can't be empty");
+            System.out.println("Password can't be empty");
             return "";
         }
-        return BCrypt.hashpw(CrytoUtil.sign(key, username + password), BCrypt.gensalt());
+        return BCrypt.hashpw(CrytoUtil.sign(secretKey, username + password), BCrypt.gensalt());
     }
 
     @Override
     public boolean verifyPassword(String username, String password, String passwordHash) {
         if(username.isEmpty() || username == null || password.isEmpty() || password == null || passwordHash.isEmpty() || passwordHash == null) {
-            System.out.print("Username and password can't be empty");
+            System.out.println("Username and password can't be empty");
             return false;
         }
-        return BCrypt.checkpw(CrytoUtil.sign(key, username + password), passwordHash);
+        return BCrypt.checkpw(CrytoUtil.sign(secretKey, username + password), passwordHash);
     }
 
     @Override
@@ -42,13 +58,13 @@ public class UserServiceImpl implements UserService{
                 newPassword.isEmpty() || newPassword == null || 
                 passwordHash.isEmpty() || passwordHash == null
                 ) {
-                System.out.print("Username and password can't be empty");
+                System.out.println("Username and password can't be empty");
                 return "";
             }
             if(verifyPassword(username, oldPassword, passwordHash)) {
                 return hashPassword(username, newPassword);
             } else {
-                System.out.print("Username or password is not correct");
+                System.out.println("Username or password is not correct");
                 return "";
             }
         } catch (Exception e) {
@@ -77,8 +93,27 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserCredential getUserCredentialByUsername(String username) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getUserCredentialByUsername'");
+        UserEntity user = userRepository.findByUsername(username);
+        return user != null ? 
+            UserCredential.builder()
+            .userId(user.getId().toString())
+            .username(user.getUsername())
+            .password(user.getPassword())
+            .status(user.getStatus())
+            .build()
+            : new UserCredential();
+    }
+
+    @Override
+    public int registerUser(UserInformation userInfo) {
+        return userRepository.registerUser(
+            CommonUtils.emptyOrDefault(userInfo.getUsername()),
+            CommonUtils.emptyOrDefault(userInfo.getPassword()),
+            CommonUtils.emptyOrDefault(userInfo.getFullname()),
+            CommonUtils.emptyOrDefault(userInfo.getPhone()),
+            CommonUtils.emptyOrDefault(userInfo.getEmail()),
+            CommonUtils.emptyOrDefault(userInfo.getCreatedBy())
+        );
     }
     
 }
